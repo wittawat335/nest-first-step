@@ -4,6 +4,6 @@ import { Controller, Get } from '@nestjs/common';
 export class ProductsController {
     @Get()
     getAll(){
-        return "product";
-    }
+    return 'product';
+    } //
 }
