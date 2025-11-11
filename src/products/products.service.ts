@@ -11,7 +11,7 @@ export class ProductsService {
       id: 2,
       title: 'Essence Mascara Lash Princess',
     },
-  ];
+  ]; //
 
   findAll() {
     return this.products;
