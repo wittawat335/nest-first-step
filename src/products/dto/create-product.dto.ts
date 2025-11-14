@@ -4,8 +4,3 @@ export class CreateProductDto {
   readonly price: number;
 }
 
-export class UpdateProductDto {
-    readonly name?: string;
-    readonly description?: string;
-    readonly price?: number;
-  }
