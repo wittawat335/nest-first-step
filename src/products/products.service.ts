@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
@@ -23,11 +23,27 @@ export class ProductsService {
     return this.productModel.findById(id).exec();
   }
 
-  update(id: string, updateProductDto: UpdateProductDto) {
-    return `This action updates a #${id} product`;
+  async update(
+    id: string,
+    updateProductDto: UpdateProductDto,
+  ): Promise<Product | null> {
+    return this.productModel
+      .findByIdAndUpdate(id, updateProductDto, { new: true })
+      .exec();
   }
 
-  remove(id: string) {
-    return `This action removes a #${id} product`;
-  } //
+  async delete(id: string): Promise<{ message: string }> {
+    try {
+      const result = await this.productModel.findByIdAndDelete(id).exec();
+      if (!result) {
+        throw new NotFoundException(`Product with ID ${id} not found`);
+      }
+      return { message: 'Delete Successful' };
+    } catch (error) {
+      // Handle or transform the error as needed
+      throw new InternalServerErrorException(
+        'An error occurred during deletion',
+      );
+    }
+  }//
 }
